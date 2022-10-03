@@ -23,6 +23,7 @@ def check_file_exist(file):
     else:
         return False
 
+# Check to see if passwd file exists and if user to be deleted exists
 def remove_user(pwfile, user):
     out = None
     with open(pwfile) as file:
