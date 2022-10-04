@@ -2,6 +2,7 @@
 import sys
 import os.path
 import re
+import subprocess
 
 # Check for 2 inputs
 def check_args():
@@ -42,14 +43,27 @@ def new_file(line):
     f = open(r"passwd.new", "a")
     f.write(line)
 
+def checkout(file):
+    subprocess.run(["co","-l",file])
+
+def checkin(user2delete, file):
+    message = "deleted", user2delete
+    msg_arg = "-m", " ".join(message)
+    arg = "".join(msg_arg)
+    subprocess.run(["ci","-u",arg,file])
+
 def main():
     if not check_args():
         print ("Usage: clean_pass.py [passwd_file] [username]")
     elif not check_file_exist(passwdFile):
         print("passwd file",passwdFile," doesn't exist, please check.")
     else:
-        print("2 args and passwd file exists")
+        print("checking out file", passwdFile)
+        checkout(passwdFile)
+        print("Removing", user2delete, "from", passwdFile)
         remove_user(passwdFile, user2delete)
+        print("checking in file", passwdFile)
+        checkin(user2delete, passwdFile)
 
 if __name__ == "__main__":
     main()
