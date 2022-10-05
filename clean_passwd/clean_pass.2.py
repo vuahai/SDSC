@@ -4,6 +4,7 @@ import os.path
 import re
 import subprocess
 
+
 # Check for 2 inputs
 def check_args():
     if len(sys.argv) == 3:
@@ -24,20 +25,36 @@ def check_file_exist(file):
     else:
         return False
 
-# Check to see if passwd file exists and if user to be deleted exists
-def remove_user(pwfile, user):
+# Check to see if user exists
+def check_user(pwfile, user):
     out = None
     with open(pwfile) as file:
         for line in file:
             if re.search(r'\b' + line.split(":")[0] + r'\b', user):
-                out = "notNone"
+#                out = "notNone"
+                return True
         if out is None:
-            print(user,"not found")
-        else:
-            with open(pwfile) as file:
-                for line in file:
-                    if line.split(":")[0] != user:
-                        new_file(line)
+#            print(user,"not found")
+            return False
+
+# Check to see if passwd file exists and if user to be deleted exists
+def remove_user(pwfile, user):
+     with open(pwfile) as file:
+        for line in file:
+            if line.split(":")[0] != user:
+                f = open(r"passwd.new","a")
+                f.write(line)
+        os.replace('passwd.new',pwfile)
+#                 new_file(line)
+
+#def remove_user(pwfile, user):
+#    with open(pwfile) as input:
+#        with open(temp_file, "w") as output:
+#            for line in input:
+#                line = line.replace(user, "")
+#            output.write(line)
+#    os.replace('temp_file',pwfile)
+
 # Create new file
 def new_file(line):
     f = open(r"passwd.new", "a")
@@ -57,6 +74,8 @@ def main():
         print ("Usage: clean_pass.py [passwd_file] [username]")
     elif not check_file_exist(passwdFile):
         print("passwd file",passwdFile," doesn't exist, please check.")
+    elif not check_user(passwdFile, user2delete):
+        print("User",user2delete,"does not exists in",passwdFile)
     else:
         print("checking out file", passwdFile)
         checkout(passwdFile)
@@ -67,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
