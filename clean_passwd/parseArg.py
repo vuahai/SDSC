@@ -21,20 +21,28 @@ def read_args():
 
 def main():
     read_args()
-    y = 0
-    while y < len(server):
-        if not deluser.check_file_exist(server[y]):
-            print("passwd file", server[y], " doesn't exist, please check.")
-        elif not deluser.check_user(server[y], user[y]):
-            print("User", user[y], "does not exists in", server[y])
-        else:
-            print("checking out file", server[y])
-            deluser.checkout(server[y])
-            print("Removing", user[y], "from", server[y])
-            deluser.remove_user(server[y], user[y])
-            print("checking in file", server[y])
-            deluser.checkin(user[y], server[y])
-        y = y + 1
+    z = 0
+    while z < len(server):
+        print("Remove:",user[z],"from:",server[z])
+        z = z + 1
+    confirm = input('Are you sure? (Y/N)')
+    if confirm == "Y":
+        y = 0
+        while y < len(server):
+            if not deluser.check_file_exist(server[y]):
+                print("passwd file", server[y], " doesn't exist, please check.")
+            elif not deluser.check_user(server[y], user[y]):
+                print("User", user[y], "does not exists in", server[y])
+            else:
+                print("checking out file", server[y])
+                deluser.checkout(server[y])
+                print("Removing", user[y], "from", server[y])
+                deluser.remove_user(server[y], user[y])
+                print("checking in file", server[y])
+                deluser.checkin(user[y], server[y])
+            y = y + 1
+    else:
+        print("Abort")
 
 
 if __name__ == "__main__":
