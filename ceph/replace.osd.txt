@@ -1,0 +1,12 @@
+ceph orch daemon stop osd.2
+ - wait for osd to drain
+ceph orch daemon rm osd.2
+ceph osd rm osd.2
+ceph osd crush rm osd.2
+ceph orch daemon rm osd.2
+
+
+*** ceph osd find osd.5 --> gives details such as osd_fsid
+*** lsblk --> match fsid to drive and osd
+
+ceph orch device zap ceph-osd1 /dev/sdd
